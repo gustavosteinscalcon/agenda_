@@ -15,3 +15,6 @@ CREATE TABLE contatos(
     id_endereco INT,
     FOREIGN KEY (id_endereco) REFERENCES enderecos(id)
 );
+
+INSERT INTO 
+contatos(nome,celular,email) VALUES ("fulano","(45)99999-9898","fulano@gmail.com");
