@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ifpr.agenda.model.Contato;
 import br.edu.ifpr.agenda.model.Endereco;
@@ -62,6 +64,39 @@ public class ContatoDAO {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public List<Contato> listar(){
+        List<Contato> contatos = new ArrayList<>();
+        String sqlContato = 
+        "SELECT * FROM contatos JOIN enderecos ON enderecos.id=contatos.id_endereco;";
+        Connection con = ConnectionFactory.getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlContato);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Endereco end = new Endereco();
+                end.setId(rs.getInt("id_endereco"));
+                end.setRua(rs.getString("rua"));
+                end.setNumero(rs.getString("numero"));
+                end.setCidade(rs.getString("cidade"));
+                end.setEstado(rs.getString("estado"));
+
+                Contato cont = new Contato();
+                cont.setId(rs.getInt("id"));
+                cont.setNome(rs.getString("nome"));
+                cont.setEmail(rs.getString("email"));
+                cont.setCelular(rs.getString("celular"));
+                cont.setEndereco(end);
+                contatos.add(cont);
+            }  
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return contatos;
+        
     }
 
 }
